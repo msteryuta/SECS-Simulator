@@ -1,0 +1,184 @@
+{
+  "START": {
+    "desc": "Similar to pressing start button. Begins auto-run cycle.",
+    "params": {
+      "CARRIERID-L":     { "format": "ASCII", "max_len": 16, "required": false },
+      "BOTTOMWAFERID-L": { "format": "ASCII", "max_len": 16, "required": false },
+      "CARRIERID-R":     { "format": "ASCII", "max_len": 16, "required": false },
+      "BOTTOMWAFERID-R": { "format": "ASCII", "max_len": 16, "required": false }
+    },
+    "hcack_errors": {
+      "65": "Rejected (Servo is OFF)",
+      "72": "Rejected (NotReadyToPPStart)",
+      "76": "Rejected (Not Current Reel Requested)",
+      "77": "Reject due to different recipe type"
+    },
+    "triggers_events": [140, 259, 107, 150, 151, 141],
+    "requires_state": "ONLINE_REMOTE"
+  },
+  "STOP": {
+    "desc": "Stop auto running.",
+    "params": {},
+    "hcack_errors": {},
+    "triggers_events": [141],
+    "requires_state": "ONLINE_REMOTE"
+  },
+  "PPSELECT": {
+    "desc": "Process Program Load. Select recipe to be used.",
+    "params": {
+      "PPID": { "format": "ASCII", "max_len": 64, "required": true }
+    },
+    "hcack_errors": {},
+    "triggers_events": [152],
+    "requires_state": "ONLINE_REMOTE"
+  },
+  "GOLOCAL": {
+    "desc": "Change the control state to Online Local.",
+    "params": {},
+    "hcack_errors": {},
+    "triggers_events": [1],
+    "requires_state": "ONLINE_REMOTE"
+  },
+  "GOREMOTE": {
+    "desc": "Change the control state to Online Remote.",
+    "params": {},
+    "hcack_errors": {},
+    "triggers_events": [2],
+    "requires_state": "ONLINE_LOCAL"
+  },
+  "PMSTART": {
+    "desc": "DryRun for Particle Monitor start.",
+    "params": {
+      "DEVICESIDE": { "format": "ASCII", "values": ["0", "1", "2"], "required": true,
+                      "desc": "0=L&R  1=L-Side  2=R-Side" }
+    },
+    "hcack_errors": {
+      "77": "Reject due to different recipe type (not particle monitor)"
+    },
+    "triggers_events": [],
+    "requires_state": "ONLINE_REMOTE"
+  },
+  "BOTTOMSTAGEGOREADY": {
+    "desc": "Requests bonding stage goes to receive position, liftpin up.",
+    "params": {
+      "DEVICESIDE": { "format": "ASCII", "values": ["1", "2"], "required": true,
+                      "desc": "1=L-Side  2=R-Side" }
+    },
+    "hcack_errors": {
+      "65": "Rejected (Servo is OFF)"
+    },
+    "triggers_events": [142],
+    "requires_state": "ONLINE_REMOTE"
+  },
+  "BOTTOMMAPREAD": {
+    "desc": "Informs Bottom Map File Name to equipment.",
+    "params": {
+      "DEVICESIDE":  { "format": "ASCII", "values": ["1", "2"], "required": true },
+      "MAPFILENAME": { "format": "ASCII", "max_len": 40, "required": true }
+    },
+    "hcack_errors": {
+      "67": "Rejected (No Map)",
+      "68": "Rejected (Convert fail)"
+    },
+    "triggers_events": [],
+    "requires_state": "ONLINE_REMOTE"
+  },
+  "BOTTOMWAFERLOADCOMPLETE": {
+    "desc": "Allows liftpin down and Bonding Stage Vacuum ON.",
+    "params": {
+      "DEVICESIDE":    { "format": "ASCII", "values": ["1", "2"], "required": true },
+      "CARRIERID":     { "format": "ASCII", "max_len": 16, "required": false },
+      "BOTTOMWAFERID": { "format": "ASCII", "max_len": 16, "required": false },
+      "LOTID":         { "format": "ASCII", "max_len": 32, "required": false },
+      "SLOTID":        { "format": "ASCII", "max_len": 32, "required": false }
+    },
+    "hcack_errors": {
+      "71": "Map is not Loaded"
+    },
+    "triggers_events": [259],
+    "requires_state": "ONLINE_REMOTE"
+  },
+  "BOTTOMWAFERUNLOADCOMPLETE": {
+    "desc": "Bottom wafer unload complete notification.",
+    "params": {
+      "DEVICESIDE": { "format": "ASCII", "values": ["1", "2"], "required": true }
+    },
+    "hcack_errors": {},
+    "triggers_events": [260, 262],
+    "requires_state": "ONLINE_REMOTE"
+  },
+  "WAFERSTAGEGOREADY": {
+    "desc": "Requests Wafer stage goes to receive position and expand opens.",
+    "params": {},
+    "hcack_errors": {
+      "65": "Rejected (Servo is OFF)",
+      "69": "Rejected (Auto Running, both Top and Bottom not finished)"
+    },
+    "triggers_events": [144],
+    "requires_state": "ONLINE_REMOTE"
+  },
+  "TOPMAPREAD": {
+    "desc": "Informs Top Map File Name to equipment.",
+    "params": {
+      "MAPFILENAME": { "format": "ASCII", "max_len": 40, "required": true }
+    },
+    "hcack_errors": {
+      "67": "Rejected (No Map)",
+      "68": "Rejected (Convert fail)"
+    },
+    "triggers_events": [],
+    "requires_state": "ONLINE_REMOTE"
+  },
+  "TOPWAFERUNLOADREQUEST": {
+    "desc": "Requests unload top wafer. If wafer present, unloads; else go to receive position.",
+    "params": {},
+    "hcack_errors": {
+      "65": "Rejected (Servo is OFF)",
+      "69": "Rejected (Auto Running, both Top and Bottom not finished)"
+    },
+    "triggers_events": [145],
+    "requires_state": "ONLINE_REMOTE"
+  },
+  "TOPWAFERLOADCOMPLETE": {
+    "desc": "Allowed expand closes. Top wafer load complete.",
+    "params": {
+      "CARRIERID":  { "format": "ASCII", "max_len": 16, "required": false },
+      "TOPWAFERID": { "format": "ASCII", "max_len": 16, "required": false },
+      "LOTID":      { "format": "ASCII", "max_len": 32, "required": false },
+      "SLOTID":     { "format": "ASCII", "max_len": 32, "required": false }
+    },
+    "hcack_errors": {
+      "65": "Rejected (Servo is OFF)",
+      "71": "Map is not Loaded",
+      "73": "Wafer stage not ready or wafer already present"
+    },
+    "triggers_events": [],
+    "requires_state": "ONLINE_REMOTE"
+  },
+  "TOPWAFERUNLOADCOMPLETE": {
+    "desc": "Top wafer unload complete notification.",
+    "params": {},
+    "hcack_errors": {},
+    "triggers_events": [146],
+    "requires_state": "ONLINE_REMOTE"
+  },
+  "AOISTOP": {
+    "desc": "AOI (Automated Optical Inspection) stop command.",
+    "params": {},
+    "hcack_errors": {},
+    "triggers_events": [],
+    "requires_state": "ONLINE_REMOTE"
+  },
+  "UPLOAD_MAP": {
+    "desc": "Requests upload of die-bond map data.",
+    "params": {
+      "WAFERID": { "format": "ASCII", "max_len": 16, "required": true }
+    },
+    "hcack_errors": {
+      "71": "Map is not Loaded",
+      "80": "Target WaferID not in Equipment"
+    },
+    "triggers_events": [263],
+    "requires_state": "ONLINE_REMOTE"
+  }
+}
