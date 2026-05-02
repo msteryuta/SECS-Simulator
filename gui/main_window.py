@@ -18,6 +18,13 @@ from core.gem_state   import ControlState, ProcessState
 
 logger = logging.getLogger(__name__)
 
+# Virtual framebuffer / HF noVNC target (width x height x depth handled in Xvfb / Dockerfile).
+UI_WIDTH = 1024
+UI_HEIGHT = 768
+# Side rail widths scaled from prior 310+270 layout @ 1520px content width.
+_LEFT_W = max(208, round(310 * UI_WIDTH / 1520))
+_RIGHT_W = max(180, round(270 * UI_WIDTH / 1520))
+
 
 class MainWindow:
     """Main 3-panel simulator window."""
@@ -30,7 +37,7 @@ class MainWindow:
         self.config      = config
 
         root.title(f"SECS/GEM Simulator  —  {config.get('MODEL', 'EQ')}")
-        root.geometry('1520x900')
+        root.geometry(f'{UI_WIDTH}x{UI_HEIGHT}')
         root.configure(bg='#0D1117')
         root.protocol('WM_DELETE_WINDOW', self._on_close)
 
@@ -68,7 +75,7 @@ class MainWindow:
         main.pack(fill='both', expand=True, padx=3, pady=3)
 
         # Right panel first so center can expand
-        right = tk.Frame(main, bg='#161B22', width=270)
+        right = tk.Frame(main, bg='#161B22', width=_RIGHT_W)
         right.pack(side='right', fill='y')
         right.pack_propagate(False)
         self.eq_panel = EqPanel(right)
@@ -81,7 +88,7 @@ class MainWindow:
         self.logger.pack(fill='both', expand=True)
 
         # Left HOST panel
-        left_scroll = tk.Frame(main, bg='#161B22', width=310)
+        left_scroll = tk.Frame(main, bg='#161B22', width=_LEFT_W)
         left_scroll.pack(side='left', fill='y', padx=(0, 3))
         left_scroll.pack_propagate(False)
         canvas = tk.Canvas(left_scroll, bg='#161B22', highlightthickness=0)

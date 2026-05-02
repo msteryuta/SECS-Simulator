@@ -33,7 +33,7 @@ EXPOSE 7860
 # 不依賴 Openbox／xterm，避免選單與 PyXDG 報錯；Tk 可直接畫在 Xvfb root window 上。
 CMD bash -lc '\
     set -eu; \
-    Xvfb :1 -screen 0 1280x800x24 -ac & \
+    Xvfb :1 -screen 0 1024x768x24 -ac & \
     sleep 1; \
     python3 main.py --model "${HF_MODEL:-6600WB}" & \
     sleep 1; \

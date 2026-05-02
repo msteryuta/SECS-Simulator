@@ -5,7 +5,7 @@ set -euo pipefail
 export DISPLAY=:1
 MODEL="${HF_MODEL:-6600WB}"
 
-Xvfb :1 -screen 0 1280x800x24 &
+Xvfb :1 -screen 0 1024x768x24 &
 sleep 1
 
 x11vnc -display :1 -nopw -forever -shared -listen 127.0.0.1 -rfbport 5900 &
