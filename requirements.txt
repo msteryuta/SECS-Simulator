@@ -1,6 +1,20 @@
-# SECS/GEM Simulator — pip dependencies
+# =============================================================================
+# SECS/GEM Simulator — third-party packages (PyPI only)
+# =============================================================================
 #
-# Runtime: none. Use Python 3.10+ with tkinter (on Debian/Ubuntu: python3-tk).
+# 應用程式本體（main.py、core、handlers、gui）
+#   • 未使用任何 pip 套件，僅 Python 標準庫。
+#   • GUI：tkinter（隨多數官方 Python 安裝；Linux 請裝系統套件 python3-tk）。
 #
-# Tests:
-pytest>=7.0.0
+# 單元測試（tests/）
+#   • 唯一用到的第三方套件為 pytest（底下這一行）。
+#
+# Docker / HF：requirements 含 pytest；映像 Dockerfile 會再確保安裝 websockify；
+#   執行 GUI 仍需系統套件 python3-tk（非 pip）。
+#
+# =============================================================================
+
+pytest>=7.0.0,<9
+
+# HF Docker／noVNC（應用程式程式碼不 import；僅容器內 websocket 閘道）
+websockify>=0.11.0
