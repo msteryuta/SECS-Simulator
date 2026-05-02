@@ -11,8 +11,8 @@ import json
 import logging
 import tkinter as tk
 from tkinter import ttk
-from pathlib import Path
 
+from paths import config_path
 from core.gem_state   import GemState
 from core.hsms_server import HsmsServer
 from core.router      import SecsRouter
@@ -31,8 +31,6 @@ logging.basicConfig(
     format='%(asctime)s [%(name)-20s] %(levelname)s: %(message)s',
 )
 logger = logging.getLogger(__name__)
-
-BASE_DIR = Path(__file__).parent
 
 # Available models: display name → config file prefix
 _MODELS = {
@@ -79,7 +77,7 @@ def _pick_model() -> str:
 
 # ── Config loader ──────────────────────────────────────────────────────────────
 def _load(filename: str) -> dict:
-    path = BASE_DIR / 'config' / filename
+    path = config_path(filename)
     with open(path, encoding='utf-8') as f:
         return json.load(f)
 

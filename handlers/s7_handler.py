@@ -23,11 +23,13 @@ import shutil
 from pathlib import Path
 from typing import List
 
+from paths import recipes_root
+
 from core.secs_codec import L, A, B, U4, decode_item, Fmt
 
 logger = logging.getLogger(__name__)
 
-RECIPES_DIR: Path = Path(__file__).parent.parent / 'recipes'
+RECIPES_DIR: Path = recipes_root()
 
 # Fixed S7F26 CCODE block: L[17] of L[ U4, L[A,...] ] — edit here only; not merged from uploads.
 S7F26_CCODE_LIST: list[dict] = [

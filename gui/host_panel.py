@@ -14,9 +14,9 @@ from tkinter import ttk, messagebox, scrolledtext
 from pathlib import Path
 
 from core.secs_codec import L, A, B, U1
+from paths import config_path, recipes_root
 
 logger = logging.getLogger(__name__)
-BASE_DIR = Path(__file__).parent.parent
 
 
 def recipe_ppids_in_dir(recipes_dir: Path) -> list[str]:
@@ -108,7 +108,7 @@ class HostPanel(tk.Frame):
     # ── Helpers ────────────────────────────────────────────────────────────────
     def _load_json(self, filename: str) -> dict:
         try:
-            with open(BASE_DIR / 'config' / filename, encoding='utf-8') as f:
+            with open(config_path(filename), encoding='utf-8') as f:
                 return json.load(f)
         except Exception as exc:
             logger.warning('Cannot load %s: %s', filename, exc)
@@ -459,7 +459,7 @@ class HostPanel(tk.Frame):
         tk.Button(btn_frame, text='Cancel', command=win.destroy, width=10).pack(side='left', padx=4)
 
     def _recipe_ppids_on_disk(self) -> list[str]:
-        return recipe_ppids_in_dir(BASE_DIR / 'recipes')
+        return recipe_ppids_in_dir(recipes_root())
 
     def _send_s7f17_dialog(self):
         """Open a dialog to delete one recipe via S7F17 (dropdown, one PPID per send)."""

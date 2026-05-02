@@ -35,7 +35,7 @@ CMD bash -lc '\
     set -eu; \
     Xvfb :1 -screen 0 1280x800x24 -ac & \
     sleep 1; \
-    python3 "${HOME}/app/main.py" --model "${HF_MODEL:-6600WB}" & \
+    python3 main.py --model "${HF_MODEL:-6600WB}" & \
     sleep 1; \
     x11vnc -display :1 -nopw -forever -shared -listen 127.0.0.1 -rfbport 5900 & \
     sleep 1; \

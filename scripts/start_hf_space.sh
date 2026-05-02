@@ -11,7 +11,7 @@ sleep 1
 x11vnc -display :1 -nopw -forever -shared -listen 127.0.0.1 -rfbport 5900 &
 sleep 1
 
-cd /home/user/app
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
 python3 main.py --model "${MODEL}" &
 # Keep simulator running in background; foreground must stay alive for the container.
 # HF Spaces expects HTTP on 0.0.0.0:7860 (noVNC UI + WebSocket to VNC).
