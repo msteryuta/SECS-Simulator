@@ -1,0 +1,6 @@
+# SECS/GEM Simulator — pip dependencies
+#
+# Runtime: none. Use Python 3.10+ with tkinter (on Debian/Ubuntu: python3-tk).
+#
+# Tests:
+pytest>=7.0.0

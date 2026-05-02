@@ -1,27 +1,31 @@
-# 使用輕量級 Python 映像檔
-FROM python:3.10-slim
+# Hugging Face Spaces (Docker SDK) — Tkinter via noVNC on port 7860
+# Debian image + python3-tk: official python:*-slim images often lack working tkinter.
 
-# 安裝系統依賴：虛擬顯示器、VNC 伺服器、noVNC 及 Tkinter 必要的 X11 庫
-RUN apt-get update && apt-get install -y \
+FROM debian:bookworm-slim
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    DISPLAY=:1 \
+    HF_MODEL=6600WB
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 \
+    python3-tk \
     xvfb \
     x11vnc \
     novnc \
     websockify \
-    python3-tk \
+    ca-certificates \
+    bash \
     && rm -rf /var/lib/apt/lists/*
 
-# 設定工作目錄
-WORKDIR /app
+RUN useradd -m -u 1000 user
 
-# 複製你的專案檔案（包含 main.py, core/, handlers/, gui/, config/）
-COPY . .
+WORKDIR /home/user/app
+COPY --chown=user:user . .
+RUN chmod +x scripts/start_hf_space.sh
 
-# 暴露 noVNC 使用的連接埠
-EXPOSE 6080
+USER user
 
-# 啟動腳本：同時啟動虛擬顯示器、VNC、noVNC 和你的 Python 程式
-CMD Xvfb :1 -screen 0 1280x800x24 & \
-    export DISPLAY=:1 && \
-    x11vnc -display :1 -nopw -forever & \
-    /usr/share/novnc/utils/launch.sh --vnc localhost:5900 --listen 6080 & \
-    python main.py
+EXPOSE 7860
+
+CMD ["/home/user/app/scripts/start_hf_space.sh"]
